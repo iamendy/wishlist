@@ -7,25 +7,30 @@ import useGetUserId from "@/hooks/useGetUserId";
 
 const AllWishList = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { list, initializeList } = useContext(WishContext);
 
   const { userId } = useGetUserId();
 
   useEffect(() => {
     getUserWishes();
-  }, []);
+  }, [userId]);
 
   const getUserWishes = async () => {
-    const res = await fetch(`/api/get-wishes?user=9`);
+    setIsLoading(true);
+    const res = await fetch(`/api/get-wishes?user=${userId}`);
     const data = await res.json();
-    initializeList(data?.list);
+
+    data.list && initializeList(data?.list);
+    setIsLoading(false);
   };
 
+  if (isLoading) return <div className="text-center p-4">Fetching data..</div>;
   return (
     <div className="mt-5 space-y-3">
       {list && list.length > 0 ? (
-        list.map((wish) => (
-          <Wish key={wish.id} wish={wish} setIsOpen={setIsOpen} />
+        list.map((wish, i) => (
+          <Wish key={wish.id} wish={wish} setIsOpen={setIsOpen} sn={i} />
         ))
       ) : (
         <p>No Wishlist</p>

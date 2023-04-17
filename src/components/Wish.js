@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useContext } from "react";
 import WishContext from "@/context/wishListContext";
 
-const Wish = ({ wish, setIsOpen }) => {
+const Wish = ({ wish, setIsOpen, sn }) => {
   const { deleteFromList, setWish } = useContext(WishContext);
 
   const deleteWish = async () => {
@@ -23,7 +23,7 @@ const Wish = ({ wish, setIsOpen }) => {
     <div key={wish.id} className="border-2 border-red-400 px-4">
       <div className="flex justify-between items-center">
         <div className="flex space-x-5">
-          <span>{wish.id}</span>
+          <span>{sn + 1}</span>
           <p>{wish.title}</p>
         </div>
         <div className="w-[30%] flex justify-between">

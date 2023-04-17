@@ -2,15 +2,27 @@ import { useState, useContext } from "react";
 import WishContext from "@/context/wishListContext";
 
 const EditModal = ({ isOpen, setIsOpen }) => {
-  const { wish, setWish } = useContext(WishContext);
-  console.log(wish);
+  const { wish, setWish, deleteFromList, updateList } = useContext(WishContext);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleEdit = (e) => {
     setWish((wish) => ({ ...wish, [e.target.name]: e.target.value }));
   };
 
-  const updateWish = () => {
-    console.log(wish);
+  const updateWish = async () => {
+    setIsEditing(true);
+    const res = await fetch("/api/edit-wish", {
+      method: "POST",
+      body: JSON.stringify({
+        title: wish.title,
+        link: wish.link,
+        wishId: wish.id,
+      }),
+    });
+    const data = await res.json();
+    updateList(data.updatedWish);
+    setIsEditing(false);
+    setIsOpen(false);
   };
 
   return (
@@ -47,10 +59,11 @@ const EditModal = ({ isOpen, setIsOpen }) => {
 
           <div className="flex justify-center">
             <button
-              className="bg-blue-400 w-fit px-7 py-2 rounded-lg"
+              disabled={isEditing}
+              className="bg-blue-400 w-fit px-7 py-2 rounded-lg disabled:bg-gray-600"
               onClick={() => updateWish()}
             >
-              Update
+              {isEditing ? "Updating.." : "Update"}
             </button>
           </div>
         </div>

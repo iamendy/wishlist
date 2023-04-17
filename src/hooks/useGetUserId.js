@@ -9,7 +9,7 @@ const useGetUserId = () => {
       localStorage.getItem("wishlistID") ??
       localStorage.setItem(
         "wishlistID",
-        Math.floor(Math.random() * 10).toString()
+        Math.floor(Math.random() * 1000).toString()
       );
 
     setUserId(getId);

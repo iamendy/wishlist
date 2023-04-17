@@ -12,8 +12,10 @@ export function WishProvider({ children }) {
     setList([...list]);
   };
 
+  //removes existing entry with updated new key
   const updateList = (newList) => {
-    setList([newList, ...list]);
+    let cleanedList = list.filter((l) => l.id !== newList.id);
+    setList([newList, ...cleanedList]);
   };
 
   const deleteFromList = (id) => {

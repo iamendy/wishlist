@@ -39,7 +39,7 @@ const NewWishList = () => {
         <input
           type="text"
           className="w-full p-2 rounded-lg text-black/90"
-          placeholder="Enter Link"
+          placeholder="https://"
           onChange={(e) => setTitleLink(e.target.value)}
           value={titleLink}
         />
