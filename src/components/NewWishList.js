@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { useContext } from "react";
+import WishContext from "@/context/wishListContext";
+import useGetUserId from "@/hooks/useGetUserId";
 
-const NewWishList = ({ userId, updateList }) => {
+const NewWishList = () => {
   const [title, setTitle] = useState("");
   const [titleLink, setTitleLink] = useState("");
   const [isLoading, setIsLoading] = useState();
+  const { userId } = useGetUserId();
+  const { updateList } = useContext(WishContext);
 
   const handleNewWish = async () => {
     setIsLoading(true);

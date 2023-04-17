@@ -1,12 +1,22 @@
 import Link from "next/link";
+import { useContext } from "react";
+import WishContext from "@/context/wishListContext";
 
-const Wish = ({ wish, selectEdit }) => {
+const Wish = ({ wish, setIsOpen }) => {
+  const { deleteFromList, setWish } = useContext(WishContext);
+
   const deleteWish = async () => {
     const res = await fetch("/api/delete-wish", {
       method: "POST",
       body: JSON.stringify({ wishId: wish.id }),
     });
-    const data = await res.json();
+    await res.json();
+    deleteFromList(wish.id);
+  };
+
+  const selectWish = (wish) => {
+    setWish(wish);
+    setIsOpen(true);
   };
 
   return (
@@ -17,7 +27,8 @@ const Wish = ({ wish, selectEdit }) => {
           <p>{wish.title}</p>
         </div>
         <div className="w-[30%] flex justify-between">
-          <div className="p-2" onClick={() => selectEdit(wish.id)}>
+          {/* Edit button */}
+          <div className="p-2" onClick={() => selectWish(wish)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -33,7 +44,9 @@ const Wish = ({ wish, selectEdit }) => {
               />
             </svg>
           </div>
-          <Link href={wish.link ?? "#"} className="p-2">
+
+          {/* External link */}
+          <a href={wish.link ?? "#"} target="_blank" className="p-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -48,9 +61,15 @@ const Wish = ({ wish, selectEdit }) => {
                 d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
               />
             </svg>
-          </Link>
+          </a>
 
-          <div className="p-2" onClick={() => deleteWish()}>
+          <div
+            className="p-2"
+            onClick={() => {
+              confirm("Are you sure") ? deleteWish() : "";
+            }}
+          >
+            {/* Delete button */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import WishContext from "@/context/wishListContext";
 
-const EditModal = ({ isOpen, setIsOpen, wish }) => {
-  const [selectedWish, setSelectedWish] = useState(wish);
+const EditModal = ({ isOpen, setIsOpen }) => {
+  const { wish, setWish } = useContext(WishContext);
+  console.log(wish);
 
   const handleEdit = (e) => {
-    setSelectedWish({
-      ...selectedWish,
-      [e.target.name]: e.target.value,
-    });
+    setWish((wish) => ({ ...wish, [e.target.name]: e.target.value }));
   };
 
-  console.log(selectedWish);
+  const updateWish = () => {
+    console.log(wish);
+  };
+
   return (
     <div
       className={`${
@@ -28,7 +30,7 @@ const EditModal = ({ isOpen, setIsOpen, wish }) => {
               placeholder="Enter title"
               name="title"
               value={wish.title}
-              onChange={handleEdit}
+              onChange={(e) => handleEdit(e)}
             />
           </div>
 
@@ -38,12 +40,16 @@ const EditModal = ({ isOpen, setIsOpen, wish }) => {
               className="w-full p-2 rounded-lg text-black/90"
               name="link"
               placeholder="Enter Link"
-              onChange={handleEdit}
+              value={wish.link}
+              onChange={(e) => handleEdit(e)}
             />
           </div>
 
           <div className="flex justify-center">
-            <button className="bg-blue-400 w-fit px-7 py-2 rounded-lg">
+            <button
+              className="bg-blue-400 w-fit px-7 py-2 rounded-lg"
+              onClick={() => updateWish()}
+            >
               Update
             </button>
           </div>
