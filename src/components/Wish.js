@@ -26,7 +26,7 @@ const Wish = ({ wish, setIsOpen, sn }) => {
           <span>{sn + 1}</span>
           <p>{wish.title}</p>
         </div>
-        <div className="w-[30%] flex justify-between">
+        <div className="w-[30%] lg:max-w-[20%] flex justify-between">
           {/* Edit button */}
           <div className="p-2" onClick={() => selectWish(wish)}>
             <svg
